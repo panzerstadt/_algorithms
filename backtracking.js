@@ -1,6 +1,11 @@
 // b1, b2, g
 // g must not be in the middle
 
+// --------
+// trial 1
+// --------
+// --------
+
 // const trial = (input) => {
 //   // needs to keep track of what it has tried
 //   // what is the previous value
@@ -46,6 +51,11 @@
 //   */
 // };
 
+// --------
+// trial 2
+// --------
+// --------
+
 // const explore = (inputArray, nth, boundingFunction) => {
 //   const arrayCopy = [...inputArray];
 
@@ -63,69 +73,136 @@
 // const result = explore(testArray, (item) => item !== "g");
 // console.log(result);
 
-const INCEPTION_LEVEL_VIEW = 1;
+// --------
+// trial 3
+// --------
+// --------
 
-const givenArray = ["b1", "b2", "g"];
-const explore = (total, current, nth = 0, final = []) => {
-  if (nth === 1) {
-    // run boundary function
-    if (current === "g") {
-      console.log("boundary function hit!");
-      return false;
+// const INCEPTION_LEVEL_VIEW = 1;
+// const givenArray = ["b1", "b2", "g"];
+// const explore = (total, current, nth = 0, final = []) => {
+//   if (nth === 1) {
+//     // run boundary function
+//     if (current === "g") {
+//       console.log("boundary function hit!");
+//       return false;
+//     }
+//   }
+
+//   if (nth === INCEPTION_LEVEL_VIEW) {
+//     console.log(`
+// top level
+// ---------`);
+//     console.log("inception level", nth);
+//     console.log(current, total);
+//     console.log("previous total", final);
+//   }
+
+//   // each loop is a 'branch' off the state tree
+//   total.map((_, index) => {
+//     const totalCopy = [...total];
+//     const nthItem = totalCopy.splice(index, 1)[0];
+
+//     if (nth === INCEPTION_LEVEL_VIEW) {
+//       console.log(`
+// loop level
+// -----------`);
+//       console.log("loop number", index);
+//       // console.log("at item number", index, nth);
+//       console.log("current", nthItem);
+//       console.log("rest", totalCopy);
+//       console.log("current total", [...final, nthItem]);
+//     }
+
+//     if (!nthItem) {
+//       console.log("end!", final);
+//       // end of array
+//       return final;
+//     }
+
+//     explore(totalCopy, nthItem, nth + 1, [...final, nthItem]);
+//   });
+
+//   // const totalCopy = [...total];
+//   // const nthItem = totalCopy.splice(index, 1);
+//   // if (!nthItem.length) {
+//   //   console.log("end!", final);
+//   //   // end of array
+//   //   return final;
+//   // } else {
+//   // iterate top level
+//   // explore(total, nthItem, nth + 1, [...final, nthItem]);
+
+//   // // iterate the rest
+//   // return explore(total, undefined, nth + 1); // treat as if repeating from top
+//   // }
+// };
+
+// --------
+// trial 4
+// --------
+// --------
+
+// sketching happened, and then
+
+// const explore = (inputArrayOrLeftovers, final = []) => {
+//   // boundary function here
+
+//   const results = inputArrayOrLeftovers.map((_, index) => {
+//     let newFinal = [...final];
+
+//     // add to result
+//     const leftovers = [...inputArrayOrLeftovers];
+//     const currentItem = leftovers.splice(index, 1)[0];
+//     newFinal.push(currentItem);
+
+//     // if nothing in leftovers, we're done
+//     if (!leftovers.length) return newFinal;
+
+//     // otherwise, test all the combinations of the rest
+//     return explore(leftovers, newFinal);
+//   });
+//   console.log("got my results!", results);
+//   return results;
+// };
+
+// --------
+// trial 5 (with boundary function)
+// --------
+// --------
+
+const explore = (inputArrayOrLeftovers, final = []) => {
+  // boundary function here
+
+  const results = inputArrayOrLeftovers.map((_, index) => {
+    let newFinal = [...final];
+
+    // add to result
+    const leftovers = [...inputArrayOrLeftovers];
+    const currentItem = leftovers.splice(index, 1)[0];
+
+    if (currentItem === "g") {
+      console.log("\ncurrent item is g. what is the array like?");
+      console.log(newFinal);
+      console.log("index and item", index, currentItem);
     }
-  }
+    newFinal.push(currentItem);
 
-  if (nth === INCEPTION_LEVEL_VIEW) {
-    console.log(`
-top level
----------`);
-    console.log("inception level", nth);
-    console.log(current, total);
-    console.log("previous total", final);
-  }
+    // if nothing in leftovers, we're done
+    if (!leftovers.length) return newFinal;
 
-  // each loop is a 'branch' off the state tree
-  total.map((_, index) => {
-    const totalCopy = [...total];
-    const nthItem = totalCopy.splice(index, 1)[0];
-
-    if (nth === INCEPTION_LEVEL_VIEW) {
-      console.log(`
-loop level
------------`);
-      console.log("loop number", index);
-      // console.log("at item number", index, nth);
-      console.log("current", nthItem);
-      console.log("rest", totalCopy);
-      console.log("current total", [...final, nthItem]);
-    }
-
-    if (!nthItem) {
-      console.log("end!", final);
-      // end of array
-      return final;
-    }
-
-    explore(totalCopy, nthItem, nth + 1, [...final, nthItem]);
+    // otherwise, test all the combinations of the rest
+    return explore(leftovers, newFinal);
   });
-
-  // const totalCopy = [...total];
-  // const nthItem = totalCopy.splice(index, 1);
-  // if (!nthItem.length) {
-  //   console.log("end!", final);
-  //   // end of array
-  //   return final;
-  // } else {
-  // iterate top level
-  // explore(total, nthItem, nth + 1, [...final, nthItem]);
-
-  // // iterate the rest
-  // return explore(total, undefined, nth + 1); // treat as if repeating from top
-  // }
+  return results;
 };
 
+const givenArray = ["b1", "b2", "g"];
 const results = explore(givenArray);
-console.log("results--->", results);
+
+results.forEach((res) => {
+  console.log("result--->", res);
+});
 /*
 should return
 -------------
