@@ -180,13 +180,11 @@ const explore = (inputArrayOrLeftovers, final = []) => {
     // add to result
     const leftovers = [...inputArrayOrLeftovers];
     const currentItem = leftovers.splice(index, 1)[0];
-
-    if (currentItem === "g" && newFinal.length === 1) {
-      // if we're looking at g, and it's the second item in the array
-      return false;
-      // TODO: maybe just check last item, it's cleaner?
-    }
     newFinal.push(currentItem);
+
+    // boundary condition
+    const secondItemInArray = newFinal[1];
+    if (secondItemInArray === "g") return false;
 
     // if nothing in leftovers, we're done
     if (!leftovers.length) return newFinal;
@@ -199,6 +197,7 @@ const explore = (inputArrayOrLeftovers, final = []) => {
 
 const givenArray = ["b1", "b2", "g"];
 const results = explore(givenArray).flat();
+// caveat: flat() will screw up arrays depending on how many items in array
 
 console.log(results);
 
