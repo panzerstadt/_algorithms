@@ -181,10 +181,10 @@ const explore = (inputArrayOrLeftovers, final = []) => {
     const leftovers = [...inputArrayOrLeftovers];
     const currentItem = leftovers.splice(index, 1)[0];
 
-    if (currentItem === "g") {
-      console.log("\ncurrent item is g. what is the array like?");
-      console.log(newFinal);
-      console.log("index and item", index, currentItem);
+    if (currentItem === "g" && newFinal.length === 1) {
+      // if we're looking at g, and it's the second item in the array
+      return false;
+      // TODO: maybe just check last item, it's cleaner?
     }
     newFinal.push(currentItem);
 
@@ -197,11 +197,11 @@ const explore = (inputArrayOrLeftovers, final = []) => {
   return results;
 };
 
-const givenArray = ["b1", "b2", "g"];
+const givenArray = ["b1", "b2", "g", "b3"];
 const results = explore(givenArray);
 
 results.forEach((res) => {
-  console.log("result--->", res);
+  console.log("result--->", JSON.stringify(res));
 });
 /*
 should return
