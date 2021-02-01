@@ -192,17 +192,16 @@ const explore = (inputArrayOrLeftovers, final = []) => {
     if (!leftovers.length) return newFinal;
 
     // otherwise, test all the combinations of the rest
-    return explore(leftovers, newFinal);
+    return explore(leftovers, newFinal).map((arr) => arr.flat());
   });
-  return results;
+  return results.filter((cond) => cond !== false);
 };
 
-const givenArray = ["b1", "b2", "g", "b3"];
-const results = explore(givenArray);
+const givenArray = ["b1", "b2", "g"];
+const results = explore(givenArray).flat();
 
-results.forEach((res) => {
-  console.log("result--->", JSON.stringify(res));
-});
+console.log(results);
+
 /*
 should return
 -------------
